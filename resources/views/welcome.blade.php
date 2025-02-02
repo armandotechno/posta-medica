@@ -203,8 +203,54 @@
     // TODO: Guardar la cita
 
     const guardarCita = () => {
-        alert('Validando...')
+
+        let nombre = $('#nombre').val();
+        let fecha = $('#fecha').val();
+        let telefono = $('#telefono').val();
+        let especialidad = $('#especialidad').val();
+        let email = $('#email').val();
+        let genero = $('#genero').val();
+        let dni = $('#dni').val();
+        let hora = $('#hora').val();
+        let sintomas = $('#sintomas').val();
+
+        if (nombre === '' || fecha === '' || telefono === '' || especialidad === '' || email === '' || genero === '' || dni === '' || hora === '' || sintomas === '') {
+            swal("Alerta", "Todos los campos son obligatorio.", "warning")
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('guardarCita') }}",
+                data: {
+                    nombre,
+                    fecha,
+                    telefono,
+                    especialidad,
+                    email,
+                    genero,
+                    dni,
+                    hora,
+                    sintomas
+                },
+                success: function(response) {
+                    swal({
+                        title: '¡Cita agendada!',
+                        text: 'Su cita ha sido agendada con éxito',
+                        icon: 'success',
+                        button: 'Aceptar'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(error) {
+                    swal({
+                        title: '¡Error!',
+                        text: 'Ha ocurrido un error al agendar la cita',
+                        icon: 'error',
+                        button: 'Aceptar'
+                    });
+                }
+            });
+        }
 
     }
 </script>
-@endsection
