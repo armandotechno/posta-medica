@@ -25,13 +25,25 @@
         <div class="card-body d-flex flex-column justify-content-center align-items-center">
             <form class="form-center" method="POST" action="" style="width: 100%;">
                 @csrf
+                <!-- Primera fila: DNI y Nombre del paciente -->
                 <div class="row justify-content-between">
+                    <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
+                        <div class="form-group m-t-20">
+                            <label for="dni">DNI</label>
+                            <input type="text" class="form-control" id="dni" name="dni"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="12" required>
+                        </div>
+                    </div>
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="nombre">Nombre del paciente</label>
                             <input class="form-control" type="text" id="nombre" name="nombre" required>
                         </div>
                     </div>
+                </div>
+
+                <!-- Segunda fila: Fecha y Teléfono -->
+                <div class="row justify-content-between">
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="fecha">Seleccionar fecha</label>
@@ -39,15 +51,16 @@
                                 min="{{ date('Y-m-d') }}">
                         </div>
                     </div>
-                </div>
-
-                <div class="row justify-content-between">
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="telefono">Número de teléfono</label>
                             <input class="form-control" type="tel" id="telefono" name="telefono" required>
                         </div>
                     </div>
+                </div>
+
+                <!-- Tercera fila: Especialidad y Email -->
+                <div class="row justify-content-between">
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="especialidad">Especialidad</label>
@@ -59,13 +72,14 @@
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="row justify-content-between">
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email"required>
+                        <input type="email" class="form-control" id="email" name="email" required>
                     </div>
+                </div>
+
+                <!-- Cuarta fila: Género y Hora -->
+                <div class="row justify-content-between">
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="genero">Género</label>
@@ -76,16 +90,6 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                submit
-                <div class="row justify-content-between">
-                    <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
-                        <label for="sintomas">DNI</label>
-                        <div class="form-group m-t-20">
-                            <input type="text" class="form-control" id="dni" name="dni"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="12" required>
-                        </div>
-                    </div>
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <label for="hora">Hora</label>
                         <div class="form-group m-t-20">
@@ -94,6 +98,7 @@
                     </div>
                 </div>
 
+                <!-- Quinta fila: Síntomas -->
                 <div class="row justify-content-between">
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <label for="sintomas">Síntomas</label>
@@ -104,8 +109,7 @@
                     </div>
                 </div>
 
-                {{-- TODO:: Agregar DNI, crear migracion para pacientes --}}
-
+                <!-- Botón para realizar la cita -->
                 <div class="row">
                     <div class="col-md-12 text-center m-t-20">
                         <button onclick="guardarCita()" type="button" class="btn btn-outline-info"
