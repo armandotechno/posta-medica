@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="row justify-content-between">
-                    <div class="col-md-5" style="margin-lefsubmitt: 10px; margin-right: 10px;">
+                    <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="telefono">Número de teléfono</label>
                             <input class="form-control" type="tel" id="telefono" name="telefono" required>
