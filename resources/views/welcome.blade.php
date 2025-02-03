@@ -4,72 +4,13 @@
 @section('stylesheets')
     @parent
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.1-web/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-
-    <style>
-        /* Estilos generales */
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Elimina el scroll de la página */
-            background-image: url('ruta/a/tu/imagen.jpg'); /* Ruta de la imagen de fondo */
-            background-size: cover;
-            background-attachment: fixed; /* Fija la imagen de fondo */
-            background-position: center;
-        }
-
-        /* Cambia el color de fondo del input */
-        .form-control {
-            background-color: #cce4fc;
-            border-radius: 0;
-            border: none;
-        }
-
-        label {
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .btn-outline-info {
-            background-color: #f08c00;
-            border-color: #f08c00;
-        }
-
-        .btn-outline-info:hover {
-            background-color: #b37a2c;
-            border-color: #f08c00;
-        }
-
-        /* Estilos para el nuevo div "Agenda tu cita" */
-        .agenda-header {
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px; /* Espacio entre el título y el formulario */
-            padding-right: 460px;
-            z-index: 2;
-        }
-
-        /* Contenedor del formulario */
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Ocupa toda la altura de la ventana */
-            overflow-y: auto; /* Permite scroll interno si es necesario */
-        }
-
-        /* Estilos para la tarjeta del formulario */
-        .card {
-            width: 800px;
-            max-height: 90vh; /* Altura máxima del formulario */
-            background-color: #1a2838;
-            overflow-y: auto; /* Permite scroll interno si el contenido es muy largo */
-        }
-    </style>
 @endsection
+
+@php
+    $especialidades = App\Models\Atencion::all();
+@endphp
 
 <!-- Contenedor principal -->
 <div class="form-container">
@@ -101,7 +42,7 @@
                 </div>
 
                 <div class="row justify-content-between">
-                    <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
+                    <div class="col-md-5" style="margin-lefsubmitt: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="telefono">Número de teléfono</label>
                             <input class="form-control" type="tel" id="telefono" name="telefono" required>
@@ -112,10 +53,9 @@
                             <label for="especialidad">Especialidad</label>
                             <select class="form-control" id="especialidad" name="especialidad" required>
                                 <option value="">Seleccionar especialidad</option>
-                                <option value="1">Especialidad 1</option>
-                                <option value="2">Especialidad 2</option>
-                                <option value="3">Especialidad 3</option>
-                                <option value="4">Especialidad 4</option>
+                                @foreach ($especialidades as $especialidad)
+                                    <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -133,18 +73,17 @@
                                 <option value="">Seleccionar género</option>
                                 <option value="masculino">Masculino</option>
                                 <option value="femenino">Femenino</option>
-                                <option value="otro">Otro</option>
                             </select>
                         </div>
                     </div>
                 </div>
-
+                submit
                 <div class="row justify-content-between">
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <label for="sintomas">DNI</label>
                         <div class="form-group m-t-20">
                             <input type="text" class="form-control" id="dni" name="dni"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="12" required>
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="12" required>
                         </div>
                     </div>
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
@@ -169,7 +108,7 @@
 
                 <div class="row">
                     <div class="col-md-12 text-center m-t-20">
-                        <button onclick="guardarCita()" type="submit" class="btn btn-outline-info"
+                        <button onclick="guardarCita()" type="button" class="btn btn-outline-info"
                             style="color: white; width: 150px; padding: 5px 10px; height: 35px; margin-top: 10px;">
                             Realizar cita
                         </button>
@@ -214,42 +153,59 @@
         let hora = $('#hora').val();
         let sintomas = $('#sintomas').val();
 
-        if (nombre === '' || fecha === '' || telefono === '' || especialidad === '' || email === '' || genero === '' || dni === '' || hora === '' || sintomas === '') {
+        if (nombre === '' || fecha === '' || telefono === '' || especialidad === '' || email === '' || genero ===
+            '' || dni === '' || hora === '' || sintomas === '') {
             swal("Alerta", "Todos los campos son obligatorio.", "warning")
         } else {
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('guardarCita') }}",
-                data: {
-                    nombre,
-                    fecha,
-                    telefono,
-                    especialidad,
-                    email,
-                    genero,
-                    dni,
-                    hora,
-                    sintomas
-                },
-                success: function(response) {
-                    swal({
-                        title: '¡Cita agendada!',
-                        text: 'Su cita ha sido agendada con éxito',
-                        icon: 'success',
-                        button: 'Aceptar'
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function(error) {
-                    swal({
-                        title: '¡Error!',
-                        text: 'Ha ocurrido un error al agendar la cita',
-                        icon: 'error',
-                        button: 'Aceptar'
+            Swal.fire({
+                title: 'Confirmación',
+                text: "¿Está seguro que quiere guardar esta cita?.",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: 'success',
+                cancelButtonColor: 'danger',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Sí'
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('guardarCita') }}",
+                        data: {
+                            nombre,
+                            fecha,
+                            telefono,
+                            especialidad,
+                            email,
+                            genero,
+                            dni,
+                            hora,
+                            sintomas
+                        },
+                        success: function(response) {
+                            swal({
+                                type: 'success',
+                                title: '¡Cita agendada!',
+                                text: 'Su cita ha sido agendada con éxito',
+                                icon: 'success',
+                                button: 'Aceptar'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(error) {
+                            swal({
+                                type: 'error',
+                                title: '¡Error!',
+                                text: 'Ha ocurrido un error al agendar la cita',
+                                icon: 'error',
+                                button: 'Aceptar'
+                            });
+                        }
                     });
                 }
             });
+
         }
 
     }

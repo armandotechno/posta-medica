@@ -6,4 +6,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/guardarCita', [App\Http\Controllers\RegistroCitaController::class, 'guardarCita'])->name('guardarCita');
+Route::match(['get', 'post'], '/guardarCita', [App\Http\Controllers\RegistroCitaController::class, 'guardarCita'])->name('guardarCita');

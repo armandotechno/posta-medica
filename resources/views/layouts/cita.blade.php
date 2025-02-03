@@ -13,7 +13,7 @@
     @show
     <style>
         body {
-            background-image: url('{{ asset('images/background/background-login.jpeg') }}');
+            background-image: url('{{ asset('images/background/fondo.jpg') }}');
             background-size: cover; /* Cambiado a 'cover' para que la imagen ocupe toda la pantalla */
             background-position: center; /* Centra la imagen */
             background-repeat: no-repeat; /* Evita que la imagen se repita */
