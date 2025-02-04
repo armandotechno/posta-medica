@@ -86,8 +86,8 @@
                             <label for="genero">Género</label>
                             <select class="form-control" id="genero" name="genero" required>
                                 <option value="">Seleccionar género</option>
-                                <option value="masculino">Masculino</option>
-                                <option value="femenino">Femenino</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
                             </select>
                         </div>
                     </div>
@@ -144,8 +144,6 @@
         }
     });
 
-    // TODO: Guardar la cita
-
     const guardarCita = () => {
 
         let nombre = $('#nombre').val();
@@ -159,7 +157,7 @@
         let sintomas = $('#sintomas').val();
 
         if (nombre === '' || fecha === '' || telefono === '' || especialidad === '' || email === '' || genero ===
-            '' || dni === '' || hora === '' || sintomas === '') {
+            '' || dni === '' || hora === '' ) {
             swal("Alerta", "Todos los campos son obligatorio.", "warning")
         } else {
             Swal.fire({
