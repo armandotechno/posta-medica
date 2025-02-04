@@ -31,13 +31,14 @@
                         <div class="form-group m-t-20">
                             <label for="dni">DNI</label>
                             <input type="text" class="form-control" id="dni" name="dni"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="12" required>
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="8" required>
                         </div>
                     </div>
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="nombre">Nombre del paciente</label>
-                            <input class="form-control" type="text" id="nombre" name="nombre" required>
+                            <input class="form-control" type="text" id="nombre" name="nombre" required
+                                oninput="this.value = this.value.replace(/[^a-zA-ZñÑ' áéíóúÁÉÍÓÚâêîôûÂÊÎÔÛàèìòùÀÈÌÒÙ`´^]/g, '')">
                         </div>
                     </div>
                 </div>
