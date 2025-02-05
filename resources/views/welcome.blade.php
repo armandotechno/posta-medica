@@ -38,7 +38,8 @@
                         <div class="form-group m-t-20">
                             <label for="nombre">Nombre del paciente</label>
                             <input class="form-control" type="text" id="nombre" name="nombre" required
-                                oninput="this.value = this.value.replace(/[^a-zA-ZñÑ' áéíóúÁÉÍÓÚâêîôûÂÊÎÔÛàèìòùÀÈÌÒÙ`´^]/g, '')">
+                                oninput="this.value = this.value.replace(/[^a-zA-ZñÑ' áéíóúÁÉÍÓÚâêîôûÂÊÎÔÛàèìòùÀÈÌÒÙ`´^]/g, '')"
+                                maxlength="32">
                         </div>
                     </div>
                 </div>
@@ -55,7 +56,7 @@
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="telefono">Número de teléfono</label>
-                            <input class="form-control" type="tel" id="telefono" name="telefono" required>
+                            <input class="form-control" type="tel" id="telefono" name="telefono" maxlength="15" required>
                         </div>
                     </div>
                 </div>
@@ -145,71 +146,88 @@
     });
 
     const guardarCita = () => {
+    let nombre = $('#nombre').val();
+    let fecha = $('#fecha').val();
+    let telefono = $('#telefono').val();
+    let especialidad = $('#especialidad').val();
+    let email = $('#email').val();
+    let genero = $('#genero').val();
+    let dni = $('#dni').val();
+    let hora = $('#hora').val();
+    let sintomas = $('#sintomas').val();
 
-        let nombre = $('#nombre').val();
-        let fecha = $('#fecha').val();
-        let telefono = $('#telefono').val();
-        let especialidad = $('#especialidad').val();
-        let email = $('#email').val();
-        let genero = $('#genero').val();
-        let dni = $('#dni').val();
-        let hora = $('#hora').val();
-        let sintomas = $('#sintomas').val();
+    // Validación de campos obligatorios
+    if (nombre === '' || fecha === '' || telefono === '' || especialidad === '' || email === '' || genero === '' || dni === '' || hora === '' || sintomas === '') {
+        swal("Alerta", "Todos los campos son obligatorios.", "warning");
+        return;
+    }
 
-        if (nombre === '' || fecha === '' || telefono === '' || especialidad === '' || email === '' || genero ===
-            '' || dni === '' || hora === '' ) {
-            swal("Alerta", "Todos los campos son obligatorio.", "warning")
-        } else {
-            Swal.fire({
-                title: 'Confirmación',
-                text: "¿Está seguro que quiere guardar esta cita?.",
-                type: 'question',
-                showCancelButton: true,
-                confirmButtonColor: 'success',
-                cancelButtonColor: 'danger',
-                cancelButtonText: 'No',
-                confirmButtonText: 'Sí'
-            }).then(function(result) {
-                if (result.value) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('guardarCita') }}",
-                        data: {
-                            nombre,
-                            fecha,
-                            telefono,
-                            especialidad,
-                            email,
-                            genero,
-                            dni,
-                            hora,
-                            sintomas
-                        },
-                        success: function(response) {
-                            swal({
-                                type: 'success',
-                                title: '¡Cita agendada!',
-                                text: 'Su cita ha sido agendada con éxito',
-                                icon: 'success',
-                                button: 'Aceptar'
-                            }).then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(error) {
-                            swal({
-                                type: 'error',
-                                title: '¡Error!',
-                                text: 'Ha ocurrido un error al agendar la cita',
-                                icon: 'error',
-                                button: 'Aceptar'
-                            });
-                        }
+    // Validación del correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        swal("Alerta", "Por favor, ingrese un correo electrónico válido.", "warning");
+        return;
+    }
+
+    // Validación de la fecha (no mayor a 6 meses)
+    const fechaIngresada = new Date(fecha);
+    const fechaActual = new Date();
+    const seisMesesDespues = new Date();
+    seisMesesDespues.setMonth(fechaActual.getMonth() + 6);
+
+    if (fechaIngresada > seisMesesDespues) {
+        swal("Alerta", "La fecha de la cita no puede ser mayor a 6 meses a partir de la fecha actual.", "warning");
+        return;
+    }
+
+    // Si todas las validaciones pasan, proceder a guardar la cita
+    Swal.fire({
+        title: 'Confirmación',
+        text: "¿Está seguro que quiere guardar esta cita?",
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: 'success',
+        cancelButtonColor: 'danger',
+        cancelButtonText: 'No',
+        confirmButtonText: 'Sí'
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('guardarCita') }}",
+                data: {
+                    nombre,
+                    fecha,
+                    telefono,
+                    especialidad,
+                    email,
+                    genero,
+                    dni,
+                    hora,
+                    sintomas
+                },
+                success: function(response) {
+                    swal({
+                        type: 'success',
+                        title: '¡Cita agendada!',
+                        text: 'Su cita ha sido agendada con éxito',
+                        icon: 'success',
+                        button: 'Aceptar'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(error) {
+                    swal({
+                        type: 'error',
+                        title: '¡Error!',
+                        text: 'Ha ocurrido un error al agendar la cita',
+                        icon: 'error',
+                        button: 'Aceptar'
                     });
                 }
             });
-
         }
-
-    }
+    });
+}
 </script>

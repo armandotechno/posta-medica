@@ -10,7 +10,7 @@ class RegistroCitaController extends Controller
 {
     public function guardarCita(Request $request) {
 
-        dd($request->all());
+        // dd($request->all());
 
 
         $cita = new Cita();
@@ -23,6 +23,7 @@ class RegistroCitaController extends Controller
         $cita->genero = $request->genero;
         $cita->hora_cita = $request->hora;
         $cita->sintomas = $request->sintomas ?? 'No especificado';
+        $cita->estatus_id = 3;
         $cita->save();
 
         return response()->json(1);
