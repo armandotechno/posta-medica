@@ -56,7 +56,8 @@
                     <div class="col-md-5" style="margin-left: 10px; margin-right: 10px;">
                         <div class="form-group m-t-20">
                             <label for="telefono">Número de teléfono</label>
-                            <input class="form-control" type="tel" id="telefono" name="telefono" maxlength="15" required>
+                            <input class="form-control" type="tel" id="telefono" name="telefono" maxlength="15"
+                                required>
                         </div>
                     </div>
                 </div>
@@ -169,9 +170,17 @@
         return;
     }
 
-    // Validación de la fecha (no mayor a 6 meses)
+    // Validación de la fecha (no menor a la fecha actual)
     const fechaIngresada = new Date(fecha);
     const fechaActual = new Date();
+    fechaActual.setHours(0, 0, 0, 0); // Elimina la hora para comparar solo la fecha
+
+    if (fechaIngresada < fechaActual) {
+        swal("Alerta", "La fecha de la cita no puede ser menor a la fecha actual.", "warning");
+        return;
+    }
+
+    // Validación de la fecha (no mayor a 6 meses)
     const seisMesesDespues = new Date();
     seisMesesDespues.setMonth(fechaActual.getMonth() + 6);
 
@@ -229,5 +238,5 @@
             });
         }
     });
-}
+};
 </script>
