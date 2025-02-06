@@ -216,15 +216,19 @@
                     sintomas
                 },
                 success: function(response) {
-                    swal({
-                        type: 'success',
-                        title: '¡Cita agendada!',
-                        text: 'Su cita ha sido agendada con éxito',
-                        icon: 'success',
-                        button: 'Aceptar'
-                    }).then(() => {
-                        location.reload();
-                    });
+                    if (response.success) {
+                        swal({
+                            type: 'success',
+                            title: '¡Cita agendada!',
+                            text: 'Su cita ha sido agendada con éxito',
+                            icon: 'success',
+                            button: 'Aceptar'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire("Alerta", response.message, "warning");
+                    }
                 },
                 error: function(error) {
                     swal({
