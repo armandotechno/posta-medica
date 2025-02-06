@@ -176,7 +176,7 @@
     fechaActual.setHours(0, 0, 0, 0); // Elimina la hora para comparar solo la fecha
 
     if (fechaIngresada < fechaActual) {
-        swal("Alerta", "La fecha de la cita no puede ser menor a la fecha actual.", "warning");
+        swal("Alerta", "La fecha de la cita no puede ser menor o igual a la fecha actual.", "warning");
         return;
     }
 
