@@ -30,6 +30,7 @@ class RegistroCitaController extends Controller
             $cita->hora_cita = $request->hora;
             $cita->sintomas = $request->sintomas ?? 'No especificado';
             $cita->estatus_id = 3;
+            $cita->created_at = Carbon::now();
             $cita->save();
 
             return response()->json([
